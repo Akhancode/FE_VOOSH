@@ -33,9 +33,7 @@ api.interceptors.response.use(
     // Check if the error is due to an invalid token
     if (status === 401 || status == 400) {
       localStorage.removeItem("accessToken");
-
-      const navigate = useNavigate();
-      navigate("/login", { replace: true });
+      window.location.href = '/login';
     }
 
     return Promise.reject(error);
