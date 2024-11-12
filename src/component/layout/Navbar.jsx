@@ -37,6 +37,9 @@ const Navbar = () => {
   const location = useLocation()
 
   const currentPath = location.pathname;
+  if(currentPath!=="/"&& !currentPath.startsWith("/login") && !currentPath.startsWith("/register")){
+    return
+  }
 
   let screenName = <h1 className="text-2xl font-normal capitalize "></h1>
   //Home
@@ -44,7 +47,7 @@ const Navbar = () => {
     <CalendarIcon strokeWidth={3} className="w-6 h-6 text-white " fill='#ffffff' />
   </div>
   let RightDiv = <div className="flex items-center space-x-4">
-    <UserCircleIcon strokeWidth={1.5} onClick={gotoAddPage} className="w-9 h-9 active:scale-75 text-gray-600" />
+    <UserCircleIcon strokeWidth={1.5} onClick={gotoAddPage} className="w-9 h-9 active:scale-75 text-white" />
     <button
       onClick={logout}
       className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 transition"

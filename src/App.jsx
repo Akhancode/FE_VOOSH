@@ -5,6 +5,7 @@ import Navbar from './component/layout/Navbar'
 import Login from './pages/Login'
 import ProtectedRoute from './component/protected/ProtectedRoute'
 import Register from './pages/Register'
+import ErrorPage from './pages/ErrorPage'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="*" element={<ErrorPage />} /> 
         </Routes>
       </div>
     </Router>
