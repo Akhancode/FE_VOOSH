@@ -3,7 +3,7 @@ import { Draggable } from 'react-beautiful-dnd';
 
 function TaskCard({ item,index }) {
     return (
-        <Draggable draggableId={item.id} index={index} key={item.id}>
+        <Draggable draggableId={item._id} index={index} key={item._id}>
             {(provided) => (
                 <div    {...provided.dragHandleProps}
                     {...provided.draggableProps}

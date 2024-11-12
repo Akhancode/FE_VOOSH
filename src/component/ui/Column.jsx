@@ -11,7 +11,7 @@ const Column = ({ itemsOrder, id, ITEMS }) => {
                     ref={provided.innerRef}
                     className="flex flex-col w-full min-h-60 h-fit gap-3 mt-2 p-4 text-sm"
                 >
-                    {itemsOrder.map((item_id, index) => {
+                    {itemsOrder?.map((item_id, index) => {
                         const item = ITEMS[item_id];
 
                         return (

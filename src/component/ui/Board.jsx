@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -6,6 +6,7 @@ import {
   resetServerContext,
 } from "react-beautiful-dnd";
 import Column from "./Column";
+import api, { getAllTasks, getBoard, patchColumns } from "../../api/api";
 
 const INITIAL_COLUMN_ORDER = ["column-1", "column-2", "column-3"];
 
@@ -13,68 +14,64 @@ const INITIAL_COL_DATA = {
   "column-1": {
     id: "column-1",
     title: "TODO",
-    itemsOrder: ["item-1", "item-2", "item-3"],
+    itemsOrder: [],
   },
   "column-2": {
     id: "column-2",
     title: "In Progress",
-    itemsOrder: ["item-4", "item-5"],
+    itemsOrder: [],
   },
   "column-3": {
     id: "column-3",
     title: "Done",
-    itemsOrder: ["item-6", "item-7", "item-8"],
+    itemsOrder: [],
   },
 };
 
-const ITEMS = {
-  "item-1": {
-    id: "item-1",
-    title: "Item 1",
-  },
-  "item-2": {
-    id: "item-2",
-    title: "Item 2",
-  },
-  "item-3": {
-    id: "item-3",
-    title: "Item 3",
-  },
-  "item-4": {
-    id: "item-4",
-    title: "Item 4",
-  },
-  "item-5": {
-    id: "item-5",
-    title: "Item 5",
-  },
-  "item-6": {
-    id: "item-6",
-    title: "Item 6",
-  },
-  "item-7": {
-    id: "item-7",
-    title: "Item 7",
-  },
-  "item-8": {
-    id: "item-8",
-    title: "Item 8",
-  },
-};
 
-// //add this if using next.js and keep the strict mode to false
-// export async function getServerSideProps(context) {
-//   resetServerContext();
-//   return {
-//     props: {},
-//   };
-// }
 
 export default function Board() {
   const [columnsOrder, setColumnsOrder] = useState(INITIAL_COLUMN_ORDER);
   const [data, setData] = useState(INITIAL_COL_DATA);
+  const [tasks, setTasks] = useState({})
 
-  const handleDragDrop = (results) => {
+  const [items, setItems] = useState({});
+  const updateColumnsToDB = async (updateData) => {
+    try {
+      let responseUpdate = await patchColumns(updateData)
+      console.log("responseUpdate",responseUpdate)
+    } catch (error) {
+      console.error("Error fetching board data", error);
+
+    }
+  }
+
+  useEffect(() => {
+    // Fetch data from the API
+    const fetchData = async () => {
+      try {
+        const response = await getBoard()
+        const newColumnData = response.columns;
+        // Assuming the columns order is based on IDs present in columnData
+        // setColumnsOrder(Object.keys(columnData));
+        let formatedColumnsData = { ...INITIAL_COL_DATA }
+        formatedColumnsData["column-1"].itemsOrder = newColumnData["col_todo"]
+        formatedColumnsData["column-2"].itemsOrder = newColumnData["col_inProgress"]
+        formatedColumnsData["column-3"].itemsOrder = newColumnData["col_Done"]
+
+
+        setData(formatedColumnsData);
+        setTasks(response.tasks);
+      } catch (error) {
+        console.error("Error fetching board data", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  const handleDragDrop = async (results) => {
     const { source, destination, type } = results;
 
     if (!destination) return;
@@ -132,6 +129,14 @@ export default function Board() {
 
         setData(new_data);
 
+        let updateData = {
+          "col_todo": new_data["column-1"].itemsOrder,
+          "col_inProgress": new_data["column-2"].itemsOrder,
+          "col_Done": new_data["column-3"].itemsOrder,
+        }
+        await updateColumnsToDB(updateData)
+
+        console.log("new_data", new_data)
         //update the db
       }
     }
@@ -152,6 +157,7 @@ export default function Board() {
               {/* Map through columnsOrder to render each column */}
               {columnsOrder.map((colId, index) => {
                 const columnData = data[colId];
+                console.log(columnData)
                 return (
                   <Draggable
                     draggableId={columnData.id}
@@ -174,7 +180,7 @@ export default function Board() {
                         </div>
 
                         {/* Render items within the column */}
-                        <Column {...columnData} ITEMS={ITEMS} />
+                        <Column {...columnData} ITEMS={tasks} />
                       </div>
                     )}
                   </Draggable>
