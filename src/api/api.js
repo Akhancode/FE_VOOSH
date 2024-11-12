@@ -53,6 +53,18 @@ export const patchColumns = async (data) => {
   const response = await api.patch("/column/edit",data);
   return response.data; // Handle response as needed
 };
+export const createTask = async (data) => {
+  const response = await api.post(`/task`,data);
+  return response.data; // Handle response as needed
+};
+export const editTask = async (id,data) => {
+  const response = await api.put(`/task/${id}`,data);
+  return response.data; // Handle response as needed
+};
+export const deleteTask = async (id) => {
+  const response = await api.delete(`/task/${id}`);
+  return response.data; // Handle response as needed
+};
 
 
 export default api;

@@ -7,8 +7,8 @@ const Column = ({ itemsOrder, id, ITEMS }) => {
         <Droppable droppableId={id}>
             {(provided) => (
                 <div
-                    {...provided.draggableProps}
-                    ref={provided.innerRef}
+                    {...provided?.draggableProps}
+                    ref={provided?.innerRef}
                     className="flex flex-col w-full min-h-60 h-fit gap-3 mt-2 p-4 text-sm"
                 >
                     {itemsOrder?.map((item_id, index) => {
