@@ -19,10 +19,16 @@ function LoginForm() {
         }, 10000); // 10000 ms = 10 seconds
     };
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        let userData = { email, password }
-        await login(userData)
-        navigate('/');
+        try {
+            e.preventDefault();
+            let userData = { email, password }
+            await login(userData)
+            navigate('/');
+
+        } catch (error) {
+
+            showError(error.response.data.message || error.message)
+        }
     };
     const redirectToRegister = async (e) => {
         e.preventDefault();
@@ -47,7 +53,9 @@ function LoginForm() {
                 googleAccessToken: accessToken
             })
 
+
         } catch (error) {
+
             showError(error.response.data.message || error.message)
         }
     }
