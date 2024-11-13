@@ -99,6 +99,7 @@ const TaskModal = ({ type, item, isOpen, onClose, onSubmit }) => {
 
     }
     if (type == "edit") {
+        heading = "Edit Task "
         content = (
             <div className="flex flex-col h-full  justify-between">
                 <div>
@@ -162,6 +163,33 @@ const TaskModal = ({ type, item, isOpen, onClose, onSubmit }) => {
 
             </div>
         )
+
+
+    }
+    if (type == "userProfile") {
+        heading = "User Profile Details"
+        content = ((<div className="flex flex-col h-full  justify-between">
+            <div>
+
+                <h2 className="md:text-3xl text-xl font-semibold text-gray-800">{heading}</h2>
+                <ul className="md:text-xl text-gray-700 mt-3 font-medium">
+                    <li><span className="font-bold">User Name  :
+                    </span> {`${item?.firstName} ${item?.lastName}`} </li>
+                    <li><span className="font-bold">Email  :
+                    </span> {item?.email}</li>
+                    <li><span className="font-bold">Registered On :
+                    </span> {moment((item?.createdAt)).format("DD-MM-YYYY") || "01/09/2024"}</li>
+                </ul>
+            </div>
+            <div className="mt-4 flex justify-end space-x-3 ">
+                <button
+                    onClick={onClose}
+                    className="px-4 py-2 text-gray-600 bg-gray-200 rounded hover:bg-gray-300 transition"
+                >
+                    Cancel
+                </button>
+            </div>
+        </div>))
 
 
     }

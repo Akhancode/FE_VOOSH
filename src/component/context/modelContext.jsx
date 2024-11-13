@@ -8,10 +8,7 @@ export const MyContext = createContext();
 
 const MyContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [taskSelected, setTaskSelected] = useState(null);
-    
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+   
 
     // useEffect(() => {
     //     axios.interceptors.request.use(

@@ -39,6 +39,10 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+export const getUser = async () => {
+  const response = await api.get("/user");
+  return response.data; // Handle response as needed
+};
 export const getBoard = async () => {
   const response = await api.get("/column/board");
   return response.data; // Handle response as needed

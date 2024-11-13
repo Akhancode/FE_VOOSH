@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Squares2X2Icon, PlusIcon, UserCircleIcon, CalendarIcon, ArrowLeftIcon, PencilIcon, PowerIcon } from '@heroicons/react/24/outline';
 import LogoutModal from '../modals/LogoutModal';
+import { MyContext } from '../context/modelContext';
+import TaskModal from '../modals/TaskDetailsModal';
 // import LogoutModal from '../modal/LogoutModal';
 
 
@@ -13,6 +15,8 @@ const Navbar = () => {
 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const { user } = useContext(MyContext);
 
   const handleLogout = () => {
     // Perform logout actions here
@@ -24,8 +28,8 @@ const Navbar = () => {
     setIsModalOpen(true); // Close the modal after logging out
 
   }
-  const redirectToDashBoard = () => {
-    // navigate('/dashboard')
+  const openUserProfile = () => {
+    setIsUserModalOpen(true)
 
   }
   const redirectToRegister = () => {
@@ -37,17 +41,18 @@ const Navbar = () => {
   const location = useLocation()
 
   const currentPath = location.pathname;
-  if(currentPath!=="/"&& !currentPath.startsWith("/login") && !currentPath.startsWith("/register")){
+  if (currentPath !== "/" && !currentPath.startsWith("/login") && !currentPath.startsWith("/register")) {
     return
   }
 
   let screenName = <h1 className="text-2xl font-normal capitalize "></h1>
   //Home
-  let LeftDiv = <div className='flex text-2xl justify-center items-center font-[300] gap-2 text-gray-800 cursor-pointer active:scale-90 select-none ' onClick={redirectToDashBoard}>
+  let LeftDiv = <div className='flex text-2xl justify-center items-center font-[300] gap-2 text-gray-800 cursor-pointer active:scale-90 select-none ' >
     <CalendarIcon strokeWidth={3} className="w-6 h-6 text-white " fill='#ffffff' />
   </div>
   let RightDiv = <div className="flex items-center space-x-4">
-    <UserCircleIcon strokeWidth={1.5} onClick={gotoAddPage} className="w-9 h-9 active:scale-75 text-white" />
+    {user?.avatar ? <img src={user.avatar} className='w-9 h-9 rounded-3xl active:scale-75' alt="" onClick={ openUserProfile} />
+      : <UserCircleIcon strokeWidth={1.5} className="w-9 h-9 active:scale-75 text-white" />}
     <button
       onClick={logout}
       className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 transition"
@@ -86,6 +91,12 @@ const Navbar = () => {
         onClose={() => setIsModalOpen(false)}
         onLogout={handleLogout}
       />
+      <TaskModal
+        item={user} type={"userProfile"}
+        isOpen={isUserModalOpen}
+        onClose={() => setIsUserModalOpen(false)}
+      />
+
       {/* Left Icon */}
       {LeftDiv}
 
