@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 // import { BASEURLAZURE } from "../utils/helper";
 
-const BASEURLAZURE = "http://localhost:9000"
+const BASEURLAZURE = import.meta.env.VITE_BE_BASE_URL //"http://localhost:9000"
 const api = axios.create({
     
   // baseURL: "http://localhost:9000/api", // Replace with your API URL

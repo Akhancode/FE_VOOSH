@@ -2,7 +2,7 @@
 import axios from 'axios';
 // import { BASEURLAZURE } from '../utils/helper';
 
-const BASEURLAZURE = 'http://localhost:9000'; // Replace with your API URL
+const BASEURLAZURE = import.meta.env.VITE_BE_BASE_URL// 'http://localhost:9000'; // Replace with your API URL
 const API_URL = `${BASEURLAZURE}/api/auth`; // Replace with your API URL
 
 export const register = async (userData) => {
