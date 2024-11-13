@@ -5,7 +5,7 @@ import LogoutModal from '../modals/LogoutModal';
 import { MyContext } from '../context/modelContext';
 import TaskModal from '../modals/TaskDetailsModal';
 // import LogoutModal from '../modal/LogoutModal';
-
+import vitePng from "../../assets/react.svg"
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -51,7 +51,7 @@ const Navbar = () => {
     <CalendarIcon strokeWidth={3} className="w-6 h-6 text-white " fill='#ffffff' />
   </div>
   let RightDiv = <div className="flex items-center space-x-4">
-    {user?.avatar ? <img src={user.avatar} className='w-9 h-9 rounded-3xl active:scale-75' alt="" onClick={ openUserProfile} />
+    {user?.avatar ? <img src={user.avatar} className='w-9 h-9 rounded-3xl active:scale-75' onClick={ openUserProfile} />
       : <UserCircleIcon strokeWidth={1.5} className="w-9 h-9 active:scale-75 text-white" />}
     <button
       onClick={logout}
