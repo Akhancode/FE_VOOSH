@@ -52,6 +52,8 @@ function LoginForm() {
             const response = await login({
                 googleAccessToken: accessToken
             })
+            navigate('/');
+
 
 
         } catch (error) {
