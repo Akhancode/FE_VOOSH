@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
 import { login, register } from '../../api/auth';
 import { useNavigate } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
 
 function RegisterForm() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [error, setError] = useState(''); // Error state for handling error messages
 
     const initialFormData = {
         firstName: "",
         lastName: "",
         email: "",
         password: ""
+    };
+    const showError = (message) => {
+        setError(message);
+
+        setTimeout(() => {
+            setError('');
+        }, 10000); 
     };
     const [formData, setFormData] = useState(initialFormData)
     const handleChange = (e) => {
@@ -23,14 +30,25 @@ function RegisterForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let userData = { email, password }
         await register(formData)
         navigate('/');
     };
     const redirectLogin = async (e) => {
-        
         navigate('/login');
     };
+    async function handleGoogleRegisterSuccess(tokenResponse) {
+        try {
+            const accessToken = tokenResponse.access_token;
+            const response = await register({
+                googleAccessToken: accessToken
+            })
+            navigate('/')
+
+        } catch (error) {
+            showError(error.response.data.message || error.message)
+        }
+    }
+    const registerWithGoogle = useGoogleLogin({ onSuccess: handleGoogleRegisterSuccess });
 
     return (
         <div className="bg-blue-100 p-8 rounded-lg w-4/5 md:w-2/5 shadow-md border-blue-600  border-2">
@@ -57,10 +75,16 @@ function RegisterForm() {
                 >
                     Signup
                 </button>
+
+                {error && (
+                    <div className="text-red-500 text-sm mb-4">
+                        {error}
+                    </div>
+                )}
             </form>
             <div className="text-center mt-4">
                 <p>Don't have an account? <a href="#" className="text-blue-500" onClick={redirectLogin}>Login</a></p>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">
+                <button onClick={registerWithGoogle} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">
                     Signup  with Google
                 </button>
             </div>

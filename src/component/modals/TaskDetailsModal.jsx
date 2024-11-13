@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createTask, deleteTask, editTask } from "../../api/api";
+import moment from "moment";
 
 const TaskModal = ({ type, item, isOpen, onClose, onSubmit }) => {
 
@@ -39,7 +40,7 @@ const TaskModal = ({ type, item, isOpen, onClose, onSubmit }) => {
             <ul className="md:text-xl text-gray-700 mt-3">
                 <li>Title : {item?.title}</li>
                 <li>Description : {item?.description}</li>
-                <li>CreatedAt : {item?.createdAt}</li>
+                <li>CreatedAt : {moment((item?.createdAt)).format("DD-MM-YYYY") || "01/09/2024"}</li>
             </ul>
         </div>
         <div className="mt-4 flex justify-end space-x-3 ">
@@ -140,7 +141,7 @@ const TaskModal = ({ type, item, isOpen, onClose, onSubmit }) => {
                     <ul className="md:text-xl text-gray-700 mt-3">
                         <li>Title : {item?.title}</li>
                         <li>Description : {item?.description}</li>
-                        <li>CreatedAt : {item?.createdAt}</li>
+                        <li>CreatedAt : {moment((item?.createdAt)).format("DD-MM-YYYY") || "01/09/2024"}</li>
                     </ul>
                 </div>
                 <div className="mt-4 flex justify-end space-x-3 ">
